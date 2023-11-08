@@ -6,9 +6,11 @@ SERVER		=	server
 
 CLIENT		=	client
 
-SERVER_SRCS	=	source/server/server.c
+SERVER_SRCS	=	source/server/server.c \
+				source/server/ft_realloc.c \
+				source/server/exit_handler.c
 
-CLIENT_SRCS	=	
+CLIENT_SRCS	=	source/client/client.c
 
 LIBFT_PATH	=	./libft
 

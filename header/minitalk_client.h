@@ -13,5 +13,7 @@
 #ifndef MINITALK_CLIENT_H
 # define MINITALK_CLIENT_H
 # include <unistd.h>
+# include <signal.h>
+# include "libft.h"
 
 #endif
