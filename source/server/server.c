@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:03:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/08 19:38:00 by psalame          ###   ########.fr       */
+/*   Updated: 2023/11/08 22:22:17 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	add_message_char(char c, pid_t pid)
 		g_msg_data->str = NULL;
 		g_msg_data->size_coef = 0;
 		g_msg_data->i = 0;
+		usleep(1);
 		kill(pid, SIGUSR1);
 	}
 }
@@ -70,11 +71,15 @@ static void	handle_signal(int signal, siginfo_t *info, void *oldaction)
 int	main(void)
 {
 	struct sigaction	action;
+	sigset_t			mask;
 
+	sigemptyset(&mask);
 	action.sa_sigaction = &handle_signal;
+	action.sa_flags = SA_SIGINFO;
+	action.sa_mask = mask;
 	sigaction(SIGUSR1, &action, NULL);
 	sigaction(SIGUSR2, &action, NULL);
-	g_msg_data = malloc(sizeof(g_msg_data));
+	g_msg_data = malloc(sizeof(t_message));
 	if (g_msg_data == NULL)
 	{
 		ft_printf("Error while starting up server.\n");
@@ -82,8 +87,8 @@ int	main(void)
 	}
 	init_exit();
 	g_msg_data->str = NULL;
-	g_msg_data->size_coef = 0;
-	g_msg_data->i = 0;
+	g_msg_data->size_coef = (size_t) 0;
+	g_msg_data->i = (size_t) 0;
 	ft_printf("Server PID : %d\n", getpid());
 	while (1)
 		usleep(1);

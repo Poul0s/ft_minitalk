@@ -24,10 +24,10 @@ $(LIBFT):
 	make -C $(LIBFT_PATH)
 
 $(SERVER): $(LIBFT)
-	$(CC) $(CFLAGS) $(SERVER_SRCS) -lft -L$(LIBFT_PATH) -I$(HEADER) -I$(LIBFT_PATH)/$(HEADER) -o $@
+	$(CC) $(CFLAGS) -g $(SERVER_SRCS) -lft -L$(LIBFT_PATH) -I$(HEADER) -I$(LIBFT_PATH)/$(HEADER) -o $@
 
 $(CLIENT): $(LIBFT)
-	$(CC) $(CFLAGS) $(CLIENT_SRCS) -lft -L$(LIBFT_PATH) -I$(HEADER) -I$(LIBFT_PATH)/$(HEADER) -o $@
+	$(CC) $(CFLAGS) -g $(CLIENT_SRCS) -lft -L$(LIBFT_PATH) -I$(HEADER) -I$(LIBFT_PATH)/$(HEADER) -o $@
 
 clean:
 	make -C $(LIBFT_PATH) clean
