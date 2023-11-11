@@ -6,11 +6,13 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 18:22:52 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/08 22:20:50 by psalame          ###   ########.fr       */
+/*   Updated: 2023/11/10 15:04:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_server.h"
+
+extern t_message	*g_msg_data;
 
 static void	handle_signal(int signal, siginfo_t *info, void *oldaction)
 {

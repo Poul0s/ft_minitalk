@@ -6,11 +6,13 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:03:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/08 22:22:17 by psalame          ###   ########.fr       */
+/*   Updated: 2023/11/10 15:04:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_server.h"
+
+t_message	*g_msg_data;
 
 static void	increase_message_size(void)
 {
