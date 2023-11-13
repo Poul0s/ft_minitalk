@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:03:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/10 15:04:33 by psalame          ###   ########.fr       */
+/*   Updated: 2023/11/13 22:47:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static void	add_message_char(char c, pid_t pid)
 		g_msg_data->str = NULL;
 		g_msg_data->size_coef = 0;
 		g_msg_data->i = 0;
-		usleep(1);
-		kill(pid, SIGUSR1);
 	}
 }
 
@@ -63,6 +61,7 @@ static void	handle_signal(int signal, siginfo_t *info, void *oldaction)
 	else if (signal == SIGUSR2)
 		c = c | (1 << i);
 	i++;
+	kill(info->si_pid, SIGUSR1);
 	if (i == 8)
 	{
 		add_message_char(c, info->si_pid);

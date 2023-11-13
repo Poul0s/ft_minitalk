@@ -6,26 +6,36 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:24:28 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/08 22:17:46 by psalame          ###   ########.fr       */
+/*   Updated: 2023/11/13 22:46:05 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_client.h"
 
-int	g_end_program;
+short	received;
 
 void	send_byte(pid_t pid, char c)
 {
 	unsigned short	i;
+	int				nb_try;
 
 	i = 0;
-	while (i <= 7 && !g_end_program)
+	nb_try = 0;
+	while (i <= 7 && received != -1)
 	{
-		if (((c >> i) & 1) == 1)
-			kill(pid, SIGUSR2);
-		else
-			kill(pid, SIGUSR1);
-		i++;
+		nb_try++;
+		if (received == 1)
+		{
+			received = 0;
+			if (((c >> i) & 1) == 1)
+				kill(pid, SIGUSR2);
+			else
+				kill(pid, SIGUSR1);
+			i++;
+			nb_try = 0;
+		}
+		else if (nb_try == 10000)
+			received = -1;
 		usleep(100);
 	}
 }
@@ -33,28 +43,37 @@ void	send_byte(pid_t pid, char c)
 void	send_message(pid_t pid, char *str)
 {
 	size_t	i;
+	int		nb_try;
 
 	i = 0;
-	while (str[i] && !g_end_program)
+	nb_try = 0;
+	while (str[i] && received != -1)
 	{
 		send_byte(pid, str[i]);
 		i++;
 	}
-	send_byte(pid, '\0');
+	if (received != -1)
+		send_byte(pid, '\0');
+	while (received == 0 && nb_try != 100000)
+	{
+		usleep(10);
+		nb_try++;
+	}
+	if (received == 1)
+		ft_printf("Successfuly sent message !\n");
+	else
+		ft_printf("Error while sending message. (no server response)\n");
 }
 
 void	handle_success_code(int signal)
 {
 	if (signal == SIGUSR1)
-	{
-		ft_printf("Successfuly sent message !\n");
-		exit(0);
-	}
+		received = 1;
 	else
 	{
-		g_end_program = 1;
+		received = -1;
 		ft_printf("Error while sending message. (server response error)\n");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -73,15 +92,9 @@ int	main(int ac, char **av)
 		ft_printf("Bad pid (%d).\n", serverpid);
 		return (1);
 	}
-	g_end_program = 0;
+	received = 1;
 	signal(SIGUSR1, &handle_success_code);
 	signal(SIGUSR2, &handle_success_code);
 	send_message(serverpid, av[2]);
-	sleep(30);
-	if (g_end_program == 0)
-	{
-		ft_printf("Error while sending message. (no server response)\n");
-		return (1);
-	}
 	return (0);
 }

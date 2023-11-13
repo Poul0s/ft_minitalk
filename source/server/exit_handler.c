@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 18:22:52 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/10 15:04:40 by psalame          ###   ########.fr       */
+/*   Updated: 2023/11/13 22:21:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	handle_signal(int signal, siginfo_t *info, void *oldaction)
 			free(g_msg_data->str);
 		free(g_msg_data);
 	}
-	kill(getpid(), SIGKILL);
+	exit(EXIT_SUCCESS);
 }
 
 void	init_exit(void)
