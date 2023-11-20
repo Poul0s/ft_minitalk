@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:24:28 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/20 21:51:33 by psalame          ###   ########.fr       */
+/*   Updated: 2023/11/20 20:05:31 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,15 @@ void	send_message(pid_t pid, char *str)
 	}
 	if (g_received != -1)
 		send_byte(pid, '\0');
+	while (g_received == 0 && nb_try != 100000)
+	{
+		usleep(10);
+		nb_try++;
+	}
+	if (g_received == 1)
+		ft_printf("Successfuly sent message !\n");
+	else
+		ft_printf("Error while sending message. (no server response)\n");
 }
 
 void	handle_success_code(int signal)
@@ -63,6 +72,7 @@ void	handle_success_code(int signal)
 	else
 	{
 		g_received = -1;
+		ft_printf("Error while sending message. (server response error)\n");
 		exit(EXIT_FAILURE);
 	}
 }
