@@ -38,8 +38,9 @@ $(CLIENT): $(LIBFT) $(CLIENT_OBJS)
 
 clean:
 	make -C $(LIBFT_PATH) clean
+	rm -rf $(CLIENT_OBJS) $(SERVER_OBJS)
 
-fclean:
+fclean: clean
 	make -C $(LIBFT_PATH) fclean
 	rm -rf $(SERVER) $(CLIENT)
 
